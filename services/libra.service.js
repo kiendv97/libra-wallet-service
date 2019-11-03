@@ -19,7 +19,7 @@ const createWallet = async (req,res,next) => {
 const queryBalance = async (req,res,next) => {
 
     try {
-        const address  = req.body.address;
+        const address  = req.query.address;
 
         if(!address) res.status(400).json({status: 0, message: 'Address not found'})
     
