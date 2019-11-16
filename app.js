@@ -9,13 +9,13 @@ const {secretKey} = require('./constant')
 // var usersRouter = require('./routes/users');
 var libraRouter = require('./routes/libra-v2.router')
 var UserRouter = require('./routes/users.router')
-
+var cors = require('cors')
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+app.use(cors({origin: '*'}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

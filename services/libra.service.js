@@ -28,7 +28,9 @@ const queryBalance = async (req,res,next) => {
         res.status(200).json({
             status: 1,
             message: 'OK',
-            data: data
+            data: {
+                balance: data
+            }
         })
     } catch (error) {
         res.status(500).json({
@@ -65,10 +67,10 @@ const transfer = async (req,res,next) => {
         const toAddress = req.body.toAddress || 'c12f6a22942e093f1eabe0cfc49679a9d1f55445317b5f4e9797df4d066022ee'
         const amount = req.body.amount || 0
         const mnemonic = req.body.mnemonic || ''
-        const fromAddress = req.body.fromAddress || 'c12f6a22942e093f1eabe0cfc49679a9d1f55445317b5f4e9797df4d066022ee' 
+        // const fromAddress = req.body.fromAddress || 'c12f6a22942e093f1eabe0cfc49679a9d1f55445317b5f4e9797df4d066022ee' 
 
         const data = await Libra.transfer(mnemonic, toAddress,amount)
-
+        
         res.status(200).json({
             status: 1,
             message: 'OK',
@@ -82,13 +84,14 @@ const transfer = async (req,res,next) => {
             status: 0,
             message: error.toString(),
         })
-    }
+    }   
 }
 const queryTransactionHistory = async (req,res,next) => {
     try {
-        const address = req.body.address || 'c12f6a22942e093f1eabe0cfc49679a9d1f55445317b5f4e9797df4d066022ee'
+        const address = req.query.address || 'c12f6a22942e093f1eabe0cfc49679a9d1f55445317b5f4e9797df4d066022ee'
 
         const data = await Libra.queryTransactionHistory(address)
+        console.log('DataQeryHistoy', data);
 
         res.status(200).json({
             status: 1,

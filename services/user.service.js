@@ -20,7 +20,10 @@ const signup = async (req, res, next) => {
         res.json({
             status: 1,
             message: 'OK',
-            data: token
+            data: {
+                token: token,
+                info: newWallet
+            }
         })
     } catch (error) {
         console.log('[error] ', error);
@@ -34,6 +37,8 @@ const signup = async (req, res, next) => {
 
 const signin = async (req,res,next) => {
     const { password,token } = req.body
+    console.log('[Req.body] ', req.body);
+    
     if (!password || !token ) {
         res.status(400).json({
             status: 0,
@@ -58,7 +63,10 @@ const signin = async (req,res,next) => {
         }
         res.json({
             status: 1,
-            message: 'OK'
+            message: 'OK',
+            data: {
+                address: payload.address
+            }
         })
     } catch (error) {
         console.log('[Error] ' ,error);

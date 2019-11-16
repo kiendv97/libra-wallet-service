@@ -1,4 +1,4 @@
-const { LibraClient, LibraNetwork, Account, LibraWallet, LibraAdmissionControlStatus  } = require('kulap-libra')
+const { LibraClient, LibraNetwork, Account, LibraWallet, LibraAdmissionControlStatus } = require('kulap-libra')
 const axios = require('axios')
 const moment = require('moment')
 const BigNumber = require('bignumber.js')
@@ -6,13 +6,9 @@ const BigNumber = require('bignumber.js')
 const queryBalance = async function (address) {
 
   const client = new LibraClient({ network: LibraNetwork.Testnet })
-
   const accountState = await client.getAccountState(address)
-  console.log('[accountState.balance] ', accountState.balance.toString(10));
   const balanceInMicroLibras = BigNumber(accountState.balance.toString(10))
-
   const balace = balanceInMicroLibras.dividedBy(BigNumber(1e6))
-
   return balace.toString(10)
 
 }
@@ -59,14 +55,14 @@ const transfer = async function (mnemonic, toAddress, amount) {
   // Transfer
   const response = await client.transferCoins(account, toAddress, amountToTransfer)
   console.log('[response.acStatus] ', response.acStatus);
-  
-  if ( response.acStatus && response.acStatus !== LibraAdmissionControlStatus.ACCEPTED) {
+
+  if (response.acStatus && response.acStatus !== LibraAdmissionControlStatus.ACCEPTED) {
     console.log(JSON.stringify(response))
     throw new Error(`admission_control failed with status ${LibraAdmissionControlStatus[response.acStatus]}`)
   }
 
   // Ensure sender account balance was reduced accordingly
-  
+
   return {
     response: response,
     address: account.getAddress().toHex()
